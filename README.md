@@ -82,23 +82,29 @@ resized to 66x200 and then fed into the network.
 The network used was close replica of NVIDIA and is explained below:
 
 1) The input to network is of image sizes 66x200x3 in RGB format. 
+
 2) First layer of network normalises the input values to range -1.0 to +1.0
+
 3) This is followed with three layers of 2D Convolutional layer with filter
 size of 5x5, stride of 2x2, border_mode of `valid` and ELU activation. ELU is
 found to be very good in providing a faster convergence as explained in [this 
  paper](https://arxiv.org/pdf/1511.07289v1.pdf). Output of first convolutional
  layer has an output of size 31x98x24. 2nd layer's output is 14x47x36. Third
  layer's output size is 5x22x48.
+
 4) This is followed by two more layers of 2D Convolutional layer with filter 
 size of 3x3, stride of 1x1, padding type `valid` and ELU activation. Out of 
 this 4th convolutional layer is 3x20x64 and that of 5th convolutional layer
 is 1x18x64.
+
 5) The data is then flattened and fed into a dropout layer with dropout rate 
  of 0.2 with again an ELU activation function. Use of dropout layer in this 
  and next fully connected layer helps avoid the problem of over-fitting.
+
 6) This is followed by 4 fully connected layers of sizes 1164, 100, 50 and 10 
 respectively. The first of these layers also have another dropout of 0.2. Each
 fully connected layer uses ELU activation. 
+
 7) The output from fully connected layer with size of 10 is fed into a single
 neuron without any activation. This is the output of network predicting
 steering angle. 
